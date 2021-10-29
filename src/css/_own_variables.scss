@@ -1,0 +1,20 @@
+/**
+** Own variables
+**/
+
+/*
+* global
+*/
+$body-bg: $white;
+
+/*
+* borders
+*/
+$border-width: 1px;
+$border-color: $grey-4;
+$border-radius: (("xs", 0.1rem), ("sm", 0.3rem), ("md", 0.8rem), ("lg", 1.2rem), ("xl", 1.5rem)) !default;
+
+/*
+ * components
+*/
+$rounded-pill: 50rem !default;

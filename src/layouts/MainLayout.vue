@@ -1,117 +1,53 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
+  <q-layout view="hHh lpR fFf">
+    <app-header v-if="showHeader" />
     <q-page-container>
+      <!-- <div
+        class="full-width q-pa-xs text-dark text-caption bg-warning text-center"
+        v-if="!emailVerified"
+        @click="goToProfile"
+      >Complete su perfil. Aún no ha verificado su email</div>
+      <q-pull-to-refresh @refresh="refresh" :disable="disablePullToRefresh">-->
       <router-view />
+      <!-- </q-pull-to-refresh> -->
     </q-page-container>
+
+    <!-- leftDrawer -->
+    <left-drawer />
+    <!-- / leftDrawer -->
+
+    <!-- Footer -->
+    <app-footer v-if="isMobile" />
+    <!-- / Footer -->
   </q-layout>
 </template>
 
-<script lang="ts">
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
-import { defineComponent, ref } from 'vue'
-
+<script lang='ts'>
+import { useQuasar } from 'quasar';
+import { computed, defineComponent } from 'vue'
+import AppFooter from './Footer.vue';
+import AppHeader from './Header.vue';
+import LeftDrawer from './LeftDrawer.vue';
+/**
+ * MainLayout Component
+ */
 export default defineComponent({
   name: 'MainLayout',
-
   components: {
-    EssentialLink
+    AppFooter,
+    AppHeader,
+    LeftDrawer
   },
-
-  setup () {
-    const leftDrawerOpen = ref(false)
+  setup ()
+  {
+    const $q = useQuasar();
+    // Data
+    const isMobile = computed(() => Boolean($q.platform.is.mobile));
+    const showHeader = computed(() => true)
 
     return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      isMobile, showHeader
     }
   }
-})
+});
 </script>

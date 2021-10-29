@@ -1,11 +1,10 @@
 import { RouteRecordRaw } from 'vue-router';
+import { mainRoute } from './routes/main';
+import { authRoute } from './routes/auth';
 
 const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Index.vue') }],
-  },
+  mainRoute,
+  authRoute,
 
   // Always leave this as last one,
   // but you can also remove it

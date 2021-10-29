@@ -1,1 +1,7 @@
-// app global css in SCSS form
+@import "~quasar/src/css/variables.sass";
+@import "quasar.variables";
+@import "own_variables";
+@import "mixins";
+@import "utils/borders";
+@import "utils/background";
+@import "custom";

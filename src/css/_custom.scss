@@ -1,0 +1,21 @@
+// app global css in SCSS form
+/*
+* Background
+*/
+// TODO: Fix scss variables
+body {
+  background: $body-bg;
+}
+
+.bg-gradient-primary-custom {
+  background: $primary linear-gradient(180deg, mix($yellow-5, $primary), $primary) repeat-x !important;
+}
+
+/*
+* Notify
+*/
+.notify {
+  font-size: map-get($body2, "size");
+  letter-spacing: 1px;
+  padding: map-get($space-sm, "x") map-get($space-md, "x");
+}
