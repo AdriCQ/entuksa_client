@@ -1,5 +1,5 @@
-import { reactive, ref, Ref, InjectionKey } from 'vue';
-import { IUser } from 'src/types';
+import { reactive, ref, InjectionKey } from 'vue';
+import { IUserProfile } from './types';
 /**
  * 
  */
@@ -8,49 +8,28 @@ export class UserStore
   /**
    * Properties
    */
-  private _profile: IUser.Profile;
-  private _authToken: Ref<string | null>;
-
+  private _profile = reactive<IUserProfile>({
+    id: 0,
+    createdAt: '',
+    upadateAt: '',
+    name: '',
+    lastName: '',
+    email: '',
+    mobilePhone: '',
+    password: '',
+    roles: []
+  });;
+  private _authToken = ref<string | null>(null);
   /**
-   * Constructor 
-   * @description Initialize values
+   * Profile Getter & Setter
    */
-  constructor()
-  {
-    this._profile = reactive({
-      id: null,
-      createdAt: '',
-      upadateAt: '',
-      name: '',
-      lastName: '',
-      email: '',
-      mobilePhone: '',
-      password: '',
-      roles: []
-    });
-
-    this._authToken = ref(null);
-  }
-
-  get profile ()
-  {
-    return this._profile;
-  }
-
-  set profile (newUser: IUser.Profile)
-  {
-    this._profile = newUser;
-  }
-
-  get authToken ()
-  {
-    return this._authToken.value;
-  }
-
-  set authToken (newAuthToken: string | null)
-  {
-    this._authToken.value = newAuthToken;
-  }
+  get profile () { return this._profile; }
+  set profile (newUser: IUserProfile) { this._profile = newUser; }
+  /**
+   * Auth Token Getter & Setter
+   */
+  get authToken () { return this._authToken.value; }
+  set authToken (newAuthToken: string | null) { this._authToken.value = newAuthToken; }
 }
 /**
  * 

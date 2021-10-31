@@ -14,7 +14,7 @@
     navigation
     padding
     arrows
-    class="text-dark shadow-1 rounded-borders"
+    class="text-dark"
   >
     <q-carousel-slide name="style" class="column no-wrap flex-center">
       <q-icon name="mdi-cart" size="56px" />

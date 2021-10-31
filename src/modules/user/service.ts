@@ -1,14 +1,16 @@
 import { api } from 'src/boot/axios';
-import { IUser } from 'src/types';
+import { IAuthRes, IAuthSignInReq, IAuthSignupReq } from './types';
 /**
  * UserServices
  * @returns 
  */
 export function UserServices ()
 {
-  const signIn = (params: IUser.SignInParams) => api.post<IUser.SignInRes>('/users/auth/signin', params)
+  const API = '/users/auth';
+  const signIn = (params: IAuthSignInReq) => api.post<IAuthRes>(API + '/signin', params)
+  const signUp = (params: IAuthSignupReq) => api.post<IAuthRes>(API + '/signup', params)
 
   return {
-    signIn
+    signIn, signUp
   }
 }

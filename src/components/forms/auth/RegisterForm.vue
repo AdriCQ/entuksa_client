@@ -8,9 +8,40 @@
     class="q-px-sm"
   >
     <q-card-section>
+      <!-- First Name -->
+      <q-input
+        v-model="form.name"
+        label="Nombre"
+        color="grey-6"
+        label-slot
+        :rules="rules.name"
+        lazy-rules
+        no-error-icon
+      >
+        <template v-slot:label>
+          <span class="text-grey-8 text-subtitle2">Nombre</span>
+        </template>
+      </q-input>
+      <!-- / First Name -->
+      <!-- Last Name -->
+      <q-input
+        v-model="form.lastName"
+        label="Apellidos"
+        color="grey-6"
+        label-slot
+        :rules="rules.lastName"
+        lazy-rules
+        no-error-icon
+      >
+        <template v-slot:label>
+          <span class="text-grey-8 text-subtitle2">Apellidos</span>
+        </template>
+      </q-input>
+      <!-- / Last Name -->
+      <!-- Email -->
       <q-input
         v-model="form.email"
-        label="Correo / Teléfono"
+        label="Correo"
         color="grey-6"
         label-slot
         :rules="rules.email"
@@ -18,9 +49,25 @@
         no-error-icon
       >
         <template v-slot:label>
-          <span class="text-grey-8 text-subtitle2">Correo / Teléfono</span>
+          <span class="text-grey-8 text-subtitle2">Correo</span>
         </template>
       </q-input>
+      <!-- / Email -->
+      <!-- Mobile Phone -->
+      <q-input
+        v-model="form.mobilePhone"
+        label="Teléfono"
+        color="grey-6"
+        label-slot
+        :rules="rules.mobilePhone"
+        lazy-rules
+        no-error-icon
+      >
+        <template v-slot:label>
+          <span class="text-grey-8 text-subtitle2">Teléfono</span>
+        </template>
+      </q-input>
+      <!-- / Mobile Phone -->
 
       <q-input
         v-model="form.password"
@@ -83,27 +130,41 @@ import { useRouter } from 'vue-router';
 import { Validations } from 'src/helpers/validations';
 import { injectStrict } from 'src/helpers/injections';
 import { ErrorData, } from 'src/types';
-import { userInjectionKey, UserServices, IAuthSignInReq } from 'src/modules';
+import { userInjectionKey, UserServices, IAuthSignupReq } from 'src/modules';
+import { ROUTE_NAME } from 'src/helpers';
 
 export default defineComponent({
-  name: 'AuthLoginForm',
+  name: 'AuthRegisterForm',
   setup ()
   {
     /**
      * Form
      */
-    const form = ref<IAuthSignInReq>({
+    const form = ref<IAuthSignupReq>({
+      name: '',
+      lastName: '',
       email: '',
+      mobilePhone: '',
       password: '',
     });
 
     // Validations
-    const { required, isEmail, lengthMore } = Validations();
+    const { required, isEmail, lengthMore, lengthEqual } = Validations();
 
     const rules = {
+      name: [
+        required('El nombre es necesario')
+      ],
+      lastName: [
+        required('El apellido es necesario')
+      ],
       email: [
         required('El correo electrónico no puede estar vacío.'),
         isEmail('El correo electrónico debe ser válido.'),
+      ],
+      mobilePhone: [
+        required('El número de teléfono no puede estar vacío'),
+        lengthEqual(8, 'El teléfono debe tener 8 números')
       ],
       password: [
         required('La contraseña no puede estar vacía.'),
@@ -121,7 +182,7 @@ export default defineComponent({
 
     const rememberMe = ref(false);
 
-    const { signIn } = UserServices();
+    const { signUp } = UserServices();
 
     // Quasar Plugins
     const $q = useQuasar();
@@ -135,7 +196,7 @@ export default defineComponent({
      */
     function submit ()
     {
-      signIn(form.value)
+      signUp(form.value)
         .then((response) =>
         {
           if (response.data)
@@ -148,10 +209,10 @@ export default defineComponent({
             $q.notify({
               type: 'positive',
               icon: 'mdi-check-circle-outline',
-              message: `Bienvenido ${User.profile.name} a Palrey Admin`,
+              message: `Bienvenido ${User.profile.name} a Palrey`,
             });
 
-            setTimeout(() => void $router.push({ name: 'main.home' }), 1000);
+            setTimeout(() => void $router.push({ name: ROUTE_NAME.MAIN_HOME }), 1000);
           }
         })
         .catch((error: AxiosError<ErrorData>) =>
