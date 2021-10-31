@@ -1,5 +1,5 @@
 <template>
-  <q-footer class="bg-white text-grey-9 xs" id="app-footer">
+  <q-footer class="bg-secondary text-white" v-if="isMobile" id="app-footer">
     <q-tabs
       align="justify"
       indicator-color="transparent"
@@ -30,14 +30,20 @@
 
 <script lang='ts'>
 import { computed, defineComponent } from 'vue';
-import { ROUTE_NAME } from 'src/helpers';
+import { ROUTE_NAME, uiHelper } from 'src/helpers';
 import { appInjectionKey } from 'src/modules';
-import { injectStrict } from 'src/helpers'
+import { injectStrict } from 'src/helpers';
+import { useQuasar } from 'quasar';
+/**
+ * AppFooter
+ */
 export default defineComponent({
   name: 'AppFooter',
   setup ()
   {
     const App = injectStrict(appInjectionKey);
+    const $q = useQuasar()
+    const { isMobile } = uiHelper($q);
     // Data
     const countCart = computed(() => Number(0));
     // Methods
@@ -49,6 +55,7 @@ export default defineComponent({
     return {
       // Computed
       countCart,
+      isMobile,
       ROUTE_NAME,
       // Methods
       openLeftDrawer,

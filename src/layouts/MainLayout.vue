@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="lHh lpR fFf">
     <app-header v-if="showHeader" />
     <q-page-container>
       <!-- <div

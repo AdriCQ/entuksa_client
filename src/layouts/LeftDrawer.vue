@@ -3,20 +3,19 @@
     :model-value="sidebarOpen"
     @update:model-value="updateSidebarOpen"
     show-if-above
-    bordered
-    overlay
+    side="left"
+    :mini="sidebarConfig.mini"
     :width="280"
   >
+    <div class="text-right gt-xs" v-if="!sidebarConfig.mini">
+      <q-btn icon="mdi-close" text-color="primary" flat @click="setSidebarMini(true)" />
+    </div>
+    <div class="text-center gt-xs" v-else>
+      <q-btn icon="mdi-menu" text-color="primary" flat @click="setSidebarMini(false)" />
+    </div>
     <!-- profile -->
-    <div class="text-center q-mt-md">
-      <q-avatar size="4rem" font-size="52px">
-        <q-img
-          src="img/icons/favicon-128x128.png"
-          alt="Kodal-Logo-Spartan-128x128"
-          title="Kodal-Logo-Spartan-128x128"
-        />
-      </q-avatar>
-      <div class="text-grey-9 text-body1 q-mt-xs">Hola, {{ userName }}</div>
+    <div class="text-center q-mt-md" v-if="!sidebarConfig.mini">
+      <div class="text-grey-9 text-body1 q-mt-xs" v-if="userName">Hola, {{ userName }}</div>
     </div>
     <!-- / profile -->
 
@@ -26,7 +25,7 @@
         <!-- Mis Pedidos -->
         <q-item clickable v-ripple>
           <q-item-section avatar top>
-            <q-avatar size="md" icon="mdi-cart-outline" color="primary" text-color="white" />
+            <q-avatar size="md" icon="mdi-cart-outline" color="primary" text-color="secondary" />
           </q-item-section>
 
           <q-item-section class="text-grey-9">
@@ -34,7 +33,7 @@
           </q-item-section>
 
           <!-- <q-item-section side v-if="orderCounter">
-            <q-badge rounded :label="orderCounter" color="primary" text-color="white" />
+            <q-badge rounded :label="orderCounter" color="primary" text-color="secondary" />
           </q-item-section>-->
         </q-item>
         <!-- / Mis Pedidos -->
@@ -42,7 +41,12 @@
         <!-- Mis Marcadores -->
         <q-item clickable v-ripple>
           <q-item-section avatar top>
-            <q-avatar size="md" icon="mdi-map-marker-outline" color="primary" text-color="white" />
+            <q-avatar
+              size="md"
+              icon="mdi-map-marker-outline"
+              color="primary"
+              text-color="secondary"
+            />
           </q-item-section>
 
           <q-item-section class="text-grey-9">
@@ -53,7 +57,7 @@
         <!-- Profile -->
         <q-item clickable v-ripple>
           <q-item-section avatar top>
-            <q-avatar size="md" icon="mdi-wrench" color="primary" text-color="white" />
+            <q-avatar size="md" icon="mdi-wrench" color="primary" text-color="secondary" />
           </q-item-section>
 
           <q-item-section class="text-grey-9">
@@ -83,8 +87,18 @@ export default defineComponent({
     const App = injectStrict(appInjectionKey);
     const User = injectStrict(userInjectionKey);
     // Data
+    const sidebarConfig = computed(() => App.leftDrawerConfg);
     const sidebarOpen = computed(() => App.leftDrawer);
     const userName = computed(() => User.profile.name);
+    /**
+     * -----------------------------------------
+     *	Methods
+     * -----------------------------------------
+     */
+    /**
+     * setSidebarMini
+     */
+    function setSidebarMini (_mini: boolean) { App.leftDrawerConfg.mini = _mini }
     /**
      * updateSidebarOpen
      */
@@ -92,9 +106,9 @@ export default defineComponent({
 
     return {
       // Data
-      sidebarOpen, userName,
+      sidebarConfig, sidebarOpen, userName,
       // Methods
-      updateSidebarOpen
+      setSidebarMini, updateSidebarOpen
     }
   },
 });
