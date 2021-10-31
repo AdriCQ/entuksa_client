@@ -1,4 +1,5 @@
-import { ref, Ref, InjectionKey } from 'vue';
+import { ref, InjectionKey, reactive } from 'vue';
+import { IAppLeftDrawerConfig } from './types';
 /**
  * 
  */
@@ -7,17 +8,11 @@ export class AppStore
   /**
    * Properties
    */
-  private _appToken: Ref<string>;
-  private _leftDrawer: Ref<boolean>;
-  /**
-   * Constructor 
-   * @description Initialize values
-   */
-  constructor()
-  {
-    this._appToken = ref('');
-    this._leftDrawer = ref(false);
-  }
+  private _appToken = ref('');
+  private _leftDrawer = ref(false);
+  private _leftDrawerConfig = reactive<IAppLeftDrawerConfig>({
+    mini: true
+  });
   /**
    * Gets app token
    */
@@ -27,12 +22,24 @@ export class AppStore
    */
   get leftDrawer () { return this._leftDrawer.value }
   set leftDrawer (_open: boolean) { this._leftDrawer.value = _open }
+  /**
+   * Left Drawer config Getter & Setter
+   */
+  get leftDrawerConfg () { return this._leftDrawerConfig; }
+  set leftDrawerConfg (cfg: IAppLeftDrawerConfig) { this._leftDrawerConfig = cfg; }
+  /**
+   * -----------------------------------------
+   *	Methods
+   * -----------------------------------------
+   */
+  toggleLeftDrawer () { this._leftDrawer.value = !this._leftDrawer.value }
+
 }
 /**
- * 
+ * App instance
  */
 export const appStore = new AppStore();
 /**
- * 
+ * App Inject Key
  */
 export const appInjectionKey: InjectionKey<AppStore> = Symbol('App');

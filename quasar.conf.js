@@ -30,6 +30,7 @@ module.exports = configure(function (ctx) {
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
       'axios',
+      'globalComponents'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -143,9 +144,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Palrey Client`,
-        short_name: `Palrey Client`,
-        description: `Palrey Client`,
+        name: 'Palrey Client',
+        short_name: 'Palrey Client',
+        description: 'Palrey Client',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

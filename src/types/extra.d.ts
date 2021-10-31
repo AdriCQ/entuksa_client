@@ -1,8 +1,9 @@
 /**
  * Data Base Properties
  */
-export interface DataBase {
-  id: number | null,
+export interface DataBase
+{
+  id: number,
   createdAt: string,
   upadateAt: string
 }
@@ -11,7 +12,8 @@ export interface DataBase {
  * Services Extra Types
  */
 
-export interface ErrorData {
+export interface ErrorData
+{
   error: string,
   message: string
   statusCode: number
