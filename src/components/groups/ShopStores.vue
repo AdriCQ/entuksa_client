@@ -34,7 +34,7 @@ export default defineComponent({
       const length = (data.value as IShopStore[]).length;
       if (length > 4)
         return (data.value as IShopStore[]).slice(0, 4);
-      return data.value;
+      return data.value as IShopStore[];
 
     });
     const colClass = computed(() =>
