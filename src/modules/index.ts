@@ -14,3 +14,8 @@ export * from './user/types';
  */
 export * from './shop/store/store';
 export * from './shop/store/types';
+/**
+ * Shop Offers
+ */
+export * from './shop/offer/store';
+export * from './shop/offer/types';

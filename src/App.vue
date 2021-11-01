@@ -6,7 +6,13 @@
 </template>
 <script lang="ts">
 import { defineComponent, provide } from 'vue';
-import { appInjectionKey, appStore, userStore, userInjectionKey } from 'src/modules';
+import
+{
+  appInjectionKey, appStore,
+  shopOfferKey, shopOffer,
+  shopStoreKey, shopStore,
+  userStore, userInjectionKey
+} from 'src/modules';
 // background
 import BackgroundVue from './components/Background.vue';
 /**
@@ -19,8 +25,10 @@ export default defineComponent({
   },
   setup ()
   {
-    provide(userInjectionKey, userStore);
     provide(appInjectionKey, appStore);
+    provide(userInjectionKey, userStore);
+    provide(shopStoreKey, shopStore);
+    provide(shopOfferKey, shopOffer);
   },
 });
 </script>

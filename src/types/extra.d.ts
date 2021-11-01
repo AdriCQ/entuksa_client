@@ -18,3 +18,11 @@ export interface ErrorData
   message: string
   statusCode: number
 }
+/**
+ * Ionly id
+ * @template T 
+ */
+export interface IOnlyId<T = number>
+{
+  id: T;
+}

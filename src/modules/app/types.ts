@@ -2,7 +2,9 @@ export interface IAppLeftDrawerConfig
 {
   mini: boolean;
 }
-
+/**
+ * Iapp block config
+ */
 export interface IAppBlockConfig
 {
   title?: string;
@@ -13,4 +15,5 @@ export interface IAppBlockConfig
   slidesToShow?: number;
   vendor?: boolean;
   loading?: boolean;
+  displayOnly?: 'MOBILE' | 'DESKTOP';
 }

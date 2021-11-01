@@ -1,5 +1,5 @@
 /**
- * Route name
+ * @enum ROUTE_NAME
  */
 export enum ROUTE_NAME
 {
@@ -9,3 +9,29 @@ export enum ROUTE_NAME
   AUTH_REGISTER = 'auth.register',
   MAIN_HOME = 'main.home'
 }
+/**
+ * @const CAROUSEL_BREAKPOINTS
+ */
+export const CAROUSEL_BREAKPOINTS = {
+  // 320px and up
+  320: {
+    itemsToShow: 2,
+    snapAlign: 'start'
+  },
+  480: {
+    itemsToShow: 3,
+    snapAlign: 'start'
+  },
+  640: {
+    itemsToShow: 4,
+    snapAlign: 'start'
+  },
+  // 800: {
+  //   itemsToShow: 5,
+  //   snapAlign: 'start'
+  // },
+  // 1024: {
+  //   itemsToShow: 6,
+  //   snapAlign: 'start'
+  // }
+};
