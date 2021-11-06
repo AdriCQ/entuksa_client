@@ -42,3 +42,11 @@ export interface IAuthSignupReq
   mobilePhone: string;
   password: string;
 }
+/**
+ * IUserStorage
+ */
+export interface IUserStorage
+{
+  authToken: string;
+  profile: IUserProfile;
+}

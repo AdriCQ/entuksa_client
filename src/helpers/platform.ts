@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { LocalStorage, Platform } from 'quasar';
 /**
  * PlatformHelper
@@ -9,7 +10,7 @@ export class PlatformHelper
    * @param _p 
    * @returns 
    */
-  private handler<T> (_p: { onDesktop?: CallableFunction, onMobileBrowser?: CallableFunction, onMobileApp?: CallableFunction }): T | null | Promise<T | null>
+  private handler<T> (_p: { onDesktop?: CallableFunction, onMobileBrowser?: CallableFunction, onMobileApp?: CallableFunction }): T | null | Promise<T>
   {
     if (Platform.is.mobile)
     {
@@ -43,6 +44,7 @@ export class PlatformHelper
    * @param _p 
    * @returns 
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   storageSet (_p: { key: string; value: any })
   {
     const onWeb = () => (LocalStorage.set(_p.key, _p.value));
@@ -53,3 +55,7 @@ export class PlatformHelper
     });
   }
 }
+/**
+ * PlatformInstance
+ */
+export const PlatformInstance = new PlatformHelper();

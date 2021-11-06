@@ -19,6 +19,13 @@ export interface ErrorData
   statusCode: number
 }
 /**
+ * IDictionary
+ */
+export interface IDictionary<T = string>
+{
+  [key: string]: T;
+}
+/**
  * Ionly id
  * @template T 
  */

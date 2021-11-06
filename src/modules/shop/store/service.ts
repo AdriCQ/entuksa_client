@@ -1,5 +1,5 @@
-import axios from "axios";
-import { IShopStore } from "src/modules";
+import axios from 'axios';
+import { IShopStore } from 'src/modules';
 /**
  * ShopStoreService
  * @returns 

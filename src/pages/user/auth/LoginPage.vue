@@ -32,13 +32,15 @@
 import { defineComponent } from 'vue';
 import LoginForm from 'src/components/forms/auth/LoginForm.vue';
 import AuthSlider from 'src/components/sliders/AuthSlider.vue';
-
+/**
+ * AuthLoginPage
+ */
 export default defineComponent({
   components: {
     LoginForm,
     AuthSlider
   },
-  name: 'LoginPage',
+  name: 'AuthLoginPage',
 
 });
 </script>

@@ -79,11 +79,11 @@
 import { defineComponent, ref } from 'vue'
 import { AxiosError } from 'axios';
 import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 import { Validations } from 'src/helpers/validations';
 import { injectStrict } from 'src/helpers/injections';
 import { ErrorData, } from 'src/types';
-import { userInjectionKey, UserServices, IAuthSignInReq } from 'src/modules';
+import { userInjectionKey, IAuthSignInReq } from 'src/modules';
 
 export default defineComponent({
   name: 'AuthLoginForm',
@@ -121,51 +121,40 @@ export default defineComponent({
 
     const rememberMe = ref(false);
 
-    const { signIn } = UserServices();
-
     // Quasar Plugins
     const $q = useQuasar();
 
-    const $router = useRouter();
+    // const $router = useRouter();
 
-    const User = injectStrict(userInjectionKey);
+    const UserStore = injectStrict(userInjectionKey);
 
     /**
      * Submit form
      */
     function submit ()
     {
-      signIn(form.value)
-        .then((response) =>
-        {
-          if (response.data)
-          {
-            const { user, token } = response.data;
-            User.profile = user;
-            User.authToken = token;
-
-            // Show notification
-            $q.notify({
-              type: 'positive',
-              icon: 'mdi-check-circle-outline',
-              message: `Bienvenido ${User.profile.name} a Palrey Admin`,
-            });
-
-            setTimeout(() => void $router.push({ name: 'main.home' }), 1000);
-          }
-        })
-        .catch((error: AxiosError<ErrorData>) =>
-        {
-          if (error.response && error.response.data)
-          {
-            // Show notification
-            $q.notify({
-              type: 'negative',
-              icon: 'mdi-alert-circle-outline',
-              message: error.response.data.message,
-            });
-          }
+      UserStore.singIn({
+        email: form.value.email,
+        password: form.value.password
+      }).then(_r =>
+      {
+        $q.notify({
+          type: 'positive',
+          icon: 'mdi-check',
+          message: `${_r.user.name}, te doy la bienvenida a EnTuKsa`,
         });
+      }).catch((error: AxiosError<ErrorData>) =>
+      {
+        if (error.response && error.response.data)
+        {
+          // Show notification
+          $q.notify({
+            type: 'negative',
+            icon: 'mdi-alert-circle-outline',
+            message: error.response.data.message,
+          });
+        }
+      });
     }
 
     return {

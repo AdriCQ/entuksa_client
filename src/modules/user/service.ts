@@ -6,7 +6,7 @@ import { IAuthRes, IAuthSignInReq, IAuthSignupReq } from './types';
  */
 export function UserServices ()
 {
-  const API = '/users/auth';
+  const API = '/api/users/auth';
   const signIn = (params: IAuthSignInReq) => api.post<IAuthRes>(API + '/signin', params)
   const signUp = (params: IAuthSignupReq) => api.post<IAuthRes>(API + '/signup', params)
 

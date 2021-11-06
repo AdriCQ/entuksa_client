@@ -7,21 +7,39 @@
     :mini="sidebarConfig.mini"
     :width="280"
   >
-    <div class="text-right gt-xs" v-if="!sidebarConfig.mini">
+    <div class="text-right gt-sm" v-if="!sidebarConfig.mini">
       <q-btn icon="mdi-close" text-color="primary" flat @click="setSidebarMini(true)" />
     </div>
-    <div class="text-center gt-xs" v-else>
+    <div class="text-center gt-sm" v-else>
       <q-btn icon="mdi-menu" text-color="primary" flat @click="setSidebarMini(false)" />
     </div>
     <!-- profile -->
-    <div class="text-center q-mt-md" v-if="!sidebarConfig.mini">
-      <div class="text-grey-9 text-body1 q-mt-xs" v-if="userName">Hola, {{ userName }}</div>
+    <div class="text-center q-mt-md gt-xs">
+      <div
+        class="text-grey-9 text-body1"
+        v-if="userName && !sidebarConfig.mini"
+      >Hola, {{ userName }}</div>
     </div>
     <!-- / profile -->
 
     <!-- list -->
     <div class="q-gutter-sm q-mt-md">
       <q-list class="rounded-borders" style="max-width: 350px">
+        <!-- Mi Perfil -->
+        <q-item clickable v-ripple v-if="sidebarConfig.mini">
+          <q-item-section avatar top>
+            <q-avatar size="md" icon="mdi-account-circle" color="primary" text-color="secondary" />
+          </q-item-section>
+
+          <q-item-section class="text-grey-9">
+            <q-item-label lines="1">Mi Cuenta</q-item-label>
+          </q-item-section>
+
+          <!-- <q-item-section side v-if="orderCounter">
+            <q-badge rounded :label="orderCounter" color="primary" text-color="secondary" />
+          </q-item-section>-->
+        </q-item>
+        <!-- / Mi Perfil -->
         <!-- Mis Pedidos -->
         <q-item clickable v-ripple>
           <q-item-section avatar top>
@@ -98,7 +116,11 @@ export default defineComponent({
     /**
      * setSidebarMini
      */
-    function setSidebarMini (_mini: boolean) { App.leftDrawerConfg.mini = _mini }
+    function setSidebarMini (_mini: boolean)
+    {
+      if (!sidebarOpen.value) updateSidebarOpen(true);
+      App.leftDrawerConfg.mini = _mini;
+    }
     /**
      * updateSidebarOpen
      */

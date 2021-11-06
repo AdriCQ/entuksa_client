@@ -1,30 +1,60 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
+import { IDictionary } from 'src/types';
+import { userStore } from 'src/modules';
 
 declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
+  interface ComponentCustomProperties
+  {
     $axios: AxiosInstance;
   }
 }
 
-// Be careful when using SSR for cross-request state pollution
-// due to creating a Singleton instance here;
-// If any client changes this (global) instance, it might be a
-// good idea to move this instance creation inside of the
-// "export default () => {}" function below (which runs individually
-// for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' });
+const api = axios.create({
+  baseURL: 'http://localhost:3000',
+  timeout: 30000,
+  timeoutErrorMessage: 'Error en la red',
+});
 
-export default boot(({ app }) => {
-  // for use inside Vue files (Options API) through this.$axios and this.$api
+export default boot(async ({ app }) =>
+{
+  await userStore.load();
+  /**
+   * Api request Interceptor
+   */
+  api.interceptors.request.use((_request) =>
+  {
+    /* Append content type header if its not present */
+    if (!(_request.headers as IDictionary)['Content-Type'])
+    {
+      (_request.headers as IDictionary)['Content-Type'] = 'application/json';
+    }
+
+    /* Check if authorization is set */
+    if (!(_request.headers as IDictionary)['Authorization'])
+    {
+      /* Check if the user is authenticated to send Bearer token */
+      const token = userStore.authToken;
+      if (token && token.length > 0)
+      {
+        (_request.headers as IDictionary).Authorization = 'Bearer ' + token;
+      } else
+      {
+        /* Send the application authentication as Bearer token */
+        (_request.headers as IDictionary).Authorization = 'Bearer ApiToken';
+      }
+    }
+    if (!(_request.headers as IDictionary)['X-App-Token'])
+    {
+      (_request.headers as IDictionary)['X-App-Token'] = '1|$argon2i$v=19$m=4096,t=3,p=1$4C/jHrTMLhBlH+8PjfkutA$ABrM77nIhbgHn6+QFJRjtBHKqa4mi+XEMKB3uKngQds';
+
+    }
+    return _request;
+  });
 
   app.config.globalProperties.$axios = axios;
-  // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
-  //       so you won't necessarily have to import axios in each vue file
 
   app.config.globalProperties.$api = api;
-  // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
-  //       so you can easily perform requests against your app's API
 });
 
 export { api };

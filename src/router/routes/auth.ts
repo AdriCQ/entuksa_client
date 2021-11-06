@@ -19,12 +19,12 @@ export const authRoute: RouteRecordRaw = {
     {
       path: 'password-reset',
       name: ROUTE_NAME.AUTH_PASSWORD_RESET,
-      component: () => import('pages/auth/PasswordResetPage.vue'),
+      component: () => import('pages/user/auth/PasswordResetPage.vue'),
     },
     {
       path: 'register',
       name: ROUTE_NAME.AUTH_REGISTER,
-      component: () => import('pages/auth/RegisterPage.vue'),
+      component: () => import('pages/user/auth/RegisterPage.vue'),
     }
   ]
 
