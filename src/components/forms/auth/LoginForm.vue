@@ -8,9 +8,38 @@
     class="q-px-sm"
   >
     <q-card-section>
+      <q-btn-toggle
+        v-model="formMode"
+        dense
+        push
+        rounded
+        spread
+        toggle-color="secondary"
+        :options="[
+          { value: 'email', slot: 'email' },
+          { value: 'mobile', slot: 'mobile' },
+        ]"
+      >
+        <template v-slot:email>
+          <div class="row items-center no-wrap">
+            <div class="text-center">Email</div>
+            <q-icon right name="mdi-email" />
+          </div>
+        </template>
+
+        <template v-slot:mobile>
+          <div class="row items-center no-wrap">
+            <div class="text-center">Teléfono</div>
+            <q-icon right name="mdi-phone" />
+          </div>
+        </template>
+      </q-btn-toggle>
+      <!-- Email Input -->
       <q-input
+        v-if="formMode === 'email'"
+        class="q-mt-sm"
         v-model="form.email"
-        label="Correo / Teléfono"
+        label="Correo"
         color="grey-6"
         label-slot
         :rules="rules.email"
@@ -18,9 +47,28 @@
         no-error-icon
       >
         <template v-slot:label>
-          <span class="text-grey-8 text-subtitle2">Correo / Teléfono</span>
+          <span class="text-grey-8 text-subtitle2">Correo</span>
         </template>
       </q-input>
+      <!-- / Email Input -->
+      <!-- MobilePhone Input -->
+      <q-input
+        v-if="formMode === 'mobile'"
+        class="q-mt-sm"
+        v-model="form.mobilePhone"
+        type="tel"
+        label="Teléfono"
+        color="grey-6"
+        label-slot
+        :rules="rules.phone"
+        lazy-rules
+        no-error-icon
+      >
+        <template v-slot:label>
+          <span class="text-grey-8 text-subtitle2">Teléfono</span>
+        </template>
+      </q-input>
+      <!-- / MobilePhone Input -->
 
       <q-input
         v-model="form.password"
@@ -56,7 +104,7 @@
         label="Entrar"
         type="submit"
         color="primary"
-        text-color="white"
+        text-color="dark"
         class="full-width"
         padding="sm"
         rounded
@@ -79,27 +127,22 @@
 import { defineComponent, ref } from 'vue'
 import { AxiosError } from 'axios';
 import { useQuasar } from 'quasar';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { Validations } from 'src/helpers/validations';
 import { injectStrict } from 'src/helpers/injections';
 import { ErrorData, } from 'src/types';
-import { userInjectionKey, IAuthSignInReq } from 'src/modules';
+import { userInjectionKey, IAuthSignInReq, IAuthRes } from 'src/modules';
+import { ROUTE_NAME } from 'src/helpers';
 
 export default defineComponent({
   name: 'AuthLoginForm',
   setup ()
   {
-    /**
-     * Form
-     */
-    const form = ref<IAuthSignInReq>({
-      email: '',
-      password: '',
-    });
-
-    // Validations
-    const { required, isEmail, lengthMore } = Validations();
-
+    const rememberMe = ref(false);
+    const $q = useQuasar();
+    const $router = useRouter();
+    const UserStore = injectStrict(userInjectionKey);
+    const { isEmail, isPhone, lengthMore, required } = Validations();
     const rules = {
       email: [
         required('El correo electrónico no puede estar vacío.'),
@@ -109,40 +152,51 @@ export default defineComponent({
         required('La contraseña no puede estar vacía.'),
         lengthMore(6, 'La contraseña debe tener 6 o más caracteres.'),
       ],
+      phone: [
+        required('El Teléfono vacío.'),
+        isPhone('El Teléfono debe ser válido.'),
+      ],
     };
-
+    // Form
+    const form = ref<IAuthSignInReq>({
+      email: '',
+      mobilePhone: '',
+      password: '',
+    });
+    // Form Mode
+    const formMode = ref<'mobile' | 'email'>('email');
     // Password Visibility
     const show_password = ref(false);
 
-    function togglePwdVisibility ()
-    {
-      show_password.value = !show_password.value;
-    }
-
-    const rememberMe = ref(false);
-
-    // Quasar Plugins
-    const $q = useQuasar();
-
-    // const $router = useRouter();
-
-    const UserStore = injectStrict(userInjectionKey);
+    function togglePwdVisibility () { show_password.value = !show_password.value; }
 
     /**
      * Submit form
      */
     function submit ()
     {
-      UserStore.singIn({
-        email: form.value.email,
-        password: form.value.password
-      }).then(_r =>
+      let signIn: Promise<IAuthRes>;
+      if (formMode.value === 'email')
+      {
+        signIn = UserStore.singIn({
+          email: form.value.email,
+          password: form.value.password
+        });
+      } else
+      {
+        signIn = UserStore.singIn({
+          mobilePhone: form.value.mobilePhone,
+          password: form.value.password
+        })
+      }
+      signIn.then(_r =>
       {
         $q.notify({
           type: 'positive',
           icon: 'mdi-check',
           message: `${_r.user.name}, te doy la bienvenida a EnTuKsa`,
         });
+        void $router.push({ name: ROUTE_NAME.MAIN_HOME });
       }).catch((error: AxiosError<ErrorData>) =>
       {
         if (error.response && error.response.data)
@@ -158,14 +212,14 @@ export default defineComponent({
     }
 
     return {
-      form,
+      form, formMode,
       rememberMe,
       submit,
       show_password,
       togglePwdVisibility,
       rules,
     };
-  },
+  }
 });
 </script>
 

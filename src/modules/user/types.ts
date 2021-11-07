@@ -20,7 +20,8 @@ export interface IUserProfile extends DataBase
  */
 export interface IAuthSignInReq
 {
-  email: string,
+  email?: string,
+  mobilePhone?: string,
   password: string
 }
 /**
