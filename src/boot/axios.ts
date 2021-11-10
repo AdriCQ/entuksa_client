@@ -9,9 +9,11 @@ declare module '@vue/runtime-core' {
     $axios: AxiosInstance;
   }
 }
+const baseURL = process.env.DEV ? 'http://localhost:3000' : 'https://srv.entuksa.nairda.net';
+const APP_TOKEN = '1|$argon2i$v=19$m=4096,t=3,p=1$EOHefdy1LeKmgLhRRj7Qow$rRPr4sO3+O9Aa/8YqZDnxTMPzQ/BUo4ZShXn5P5oeBE';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL,
   timeout: 30000,
   timeoutErrorMessage: 'Error en la red',
 });
@@ -46,7 +48,7 @@ export default boot(async ({ app }) =>
     }
     if (!(_request.headers as IDictionary)['X-App-Token'])
     {
-      (_request.headers as IDictionary)['X-App-Token'] = '1|$argon2i$v=19$m=4096,t=3,p=1$4C/jHrTMLhBlH+8PjfkutA$ABrM77nIhbgHn6+QFJRjtBHKqa4mi+XEMKB3uKngQds';
+      (_request.headers as IDictionary)['X-App-Token'] = APP_TOKEN;
 
     }
     return _request;

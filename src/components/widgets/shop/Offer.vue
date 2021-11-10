@@ -5,8 +5,8 @@
     v-if="show"
   >
     <q-img
-      :src="imageHandler(dataTyped.image.id, 'sm')"
-      placeholder-src="img/default.jpg"
+      :src="imageHandler(dataTyped.image, 'sm')"
+      placeholder-src="images/default.jpg"
       :alt="dataTyped.title"
       :title="dataTyped.title"
       :ratio="`${config && config.ratio ? config.ratio : 4 / 3}`"

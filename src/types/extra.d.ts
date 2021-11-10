@@ -1,3 +1,5 @@
+import { LocationQuery } from 'vue-router';
+import { ROUTE_NAME } from 'src/helpers';
 /**
  * Data Base Properties
  */
@@ -32,4 +34,13 @@ export interface IDictionary<T = string>
 export interface IOnlyId<T = number>
 {
   id: T;
+}
+/**
+ * Iroute
+ */
+export interface IRoute<Q = LocationQuery | IDictionary<string | (string | null)[]>>
+{
+  name?: ROUTE_NAME;
+  path?: string;
+  query?: Q;
 }

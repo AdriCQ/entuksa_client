@@ -1,35 +1,38 @@
 <template>
   <q-page padding>
-    <store-group :data="fakeStore" :config="{ displayDense: true }" v-for="i in 4" :key="i" />
+    <div class="q-gutter-y-sm" v-if="blocks && blocks.length">
+      <component
+        :is="block.type"
+        v-for="(block, bKey) in blocks"
+        :key="`block-${block.type}-${bKey}`"
+        :data="block.data"
+        :config="block.config"
+      />
+    </div>
   </q-page>
 </template>
 
 <script lang='ts'>
-import { IShopStore } from 'src/modules';
-import { defineAsyncComponent, defineComponent, reactive } from 'vue';
+import { injectStrict } from 'src/helpers';
+import { appInjectionKey } from 'src/modules';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'MainIndexPage',
-  components: {
-    'store-group': defineAsyncComponent(() => import('components/groups/ShopStores.vue'))
-  },
   setup ()
   {
-    const fakeStore = reactive<IShopStore[]>([]);
-    for (let i = 0; i < 6; i++)
-    {
-      fakeStore.push({
-        id: 1,
-        createdAt: '',
-        description: 'Lorem ipsum',
-        image: { id: 1 },
-        score: 50,
-        title: 'Shop Title extra long front',
-        upadateAt: ''
-      })
-    }
+    const AppStore = injectStrict(appInjectionKey);
+    // On Created
+    AppStore.setup().then(_resp => { console.log('SetupResp', _resp) }).catch(_e => { console.log('SetupError', _e) })
+    /**
+     * -----------------------------------------
+     *	Data
+     * -----------------------------------------
+     */
+    const blocks = computed(() => AppStore.homeBlocks);
+
     return {
-      fakeStore
+      blocks
     }
   }
 });

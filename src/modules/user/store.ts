@@ -28,15 +28,19 @@ export class UserStore
   });;
   private _authToken = ref<string | null>(null);
   /**
-   * Profile Getter & Setter
-   */
-  get profile () { return this._profile; }
-  set profile (newUser: IUserProfile) { this._profile = newUser; }
-  /**
    * Auth Token Getter & Setter
    */
   get authToken () { return this._authToken.value; }
   set authToken (newAuthToken: string | null) { this._authToken.value = newAuthToken; }
+  /**
+   * Is Auth
+   */
+  get isAuth () { return this._authToken ? true : false }
+  /**
+   * Profile Getter & Setter
+   */
+  get profile () { return this._profile; }
+  set profile (newUser: IUserProfile) { this._profile = newUser; }
   /**
    * Load From storage
    */
@@ -89,7 +93,6 @@ export class UserStore
     {
       throw error;
     }
-
   }
 }
 /**

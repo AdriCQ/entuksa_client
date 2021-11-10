@@ -7,7 +7,7 @@
       :ratio="`${config && config.ratio ? config.ratio : 4 / 3}`"
       spinner-color="primary"
       spinner-size="3rem"
-      placeholder-src="img/default.jpg"
+      placeholder-src="images/default.jpg"
       loading="lazy"
     >
       <div class="absolute-top-left" style="padding:0px; background-color: transparent">
