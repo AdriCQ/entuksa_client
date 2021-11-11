@@ -10,6 +10,7 @@ export enum ROUTE_NAME
   MAIN_HOME = 'main.home',
   // SHOP routes
   SHOP_STORE = 'shop.store',
+  SHOP_OFFER = 'shop.offer',
   // User Routes
   USER_PROFILE = 'user.profile',
 

@@ -1,22 +1,42 @@
-import { IShopOffer } from 'src/modules';
-import { InjectionKey } from 'vue';
+import { InjectionKey, ref, reactive } from 'vue';
+import { IShopOffer } from './types';
+import { ShopOfferService } from './service';
 /**
  * Shop offer store
  */
 export class ShopOfferStore
 {
-  private _offer: IShopOffer | null = null;
-  private _offers: IShopOffer[] = [];
+  private service = ShopOfferService();
+  private _offer = ref<IShopOffer | null>(null);
+  private _offers = reactive<IShopOffer[]>([]);
   /**
    * Offer Setter & Getter
    */
-  get offer () { return this._offer; }
-  set offer (_offer: IShopOffer | null) { this._offer = _offer; }
+  get offer () { return this._offer.value; }
+  set offer (_offer: IShopOffer | null) { this._offer.value = _offer; }
   /**
    * Offers Setter & Getter
    */
   get offers () { return this._offers; }
   set offers (_offers: IShopOffer[]) { this._offers = _offers; }
+  /**
+   * -----------------------------------------
+   *	Actions
+   * -----------------------------------------
+   */
+  /**
+   * actionFindOffer
+   * @param _offerId 
+   */
+  async actionFindOffer (_offerId: number): Promise<IShopOffer>
+  {
+    try
+    {
+      const _resp = await this.service.find(_offerId);
+      this.offer = _resp.data;
+      return _resp.data;
+    } catch (error) { throw error; }
+  }
 }
 /**
  * @const shopOffer instance

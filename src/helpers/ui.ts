@@ -1,5 +1,5 @@
 import { QVueGlobals } from 'quasar';
-import { api } from 'src/boot/axios';
+import { baseURL } from 'src/boot/axios';
 interface IId
 {
   id: number;
@@ -20,9 +20,9 @@ export function uiHelper ($q: QVueGlobals)
     {
       // Check if is Object
       if (!isNaN(imageId as number) && imageId === 1)
-        return 'images/default.jpg';
+        return `${baseURL}/images/${imageSize}/${imageId}`;
       else if ((imageId as IId).id && !isNaN((imageId as IId).id))
-        return api.get(`/images/${imageSize}/${(imageId as IId).id}`);
+        return `${baseURL}/images/${imageSize}/${(imageId as IId).id}`;
     }
     return 'images/default.jpg';
   }

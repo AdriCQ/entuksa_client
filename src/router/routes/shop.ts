@@ -7,9 +7,13 @@ export const shopRoutes: RouteRecordRaw = {
 
   children: [
     {
-      path: 'store',
+      path: 'stores/:id',
       name: ROUTE_NAME.SHOP_STORE,
       component: () => import('pages/shop/Store.vue'),
+    }, {
+      path: 'offers/:id',
+      name: ROUTE_NAME.SHOP_OFFER,
+      component: () => import('pages/shop/Offer.vue'),
     },
   ]
 

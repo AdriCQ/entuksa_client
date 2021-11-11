@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="q-mx-auto full-height justify-center no-box-shadow"
-    @click="goToProduct"
+    @click="goToOffer(dataTyped.id)"
     v-if="show"
   >
     <q-img
@@ -36,17 +36,15 @@
     <q-card-section class="q-pa-xs">
       <q-chip text-color="grey-9" icon="mdi-cart" :label="dataTyped.title" />
     </q-card-section>
-    <q-inner-loading :showing="config?.loading">
-      <q-spinner-tail size="50px" color="primary" />
-    </q-inner-loading>
   </q-card>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, toRefs } from 'vue';
-import { uiHelper, WidgetProps } from 'src/helpers';
-import { IShopOffer } from 'src/modules';
+import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
+import { ROUTE_NAME, uiHelper, WidgetProps } from 'src/helpers';
+import { IShopOffer } from 'src/modules';
 /**
  * ProductWidget
  */
@@ -59,6 +57,7 @@ export default defineComponent({
   {
     const { data, config } = toRefs(props);
     const $q = useQuasar();
+    const $router = useRouter();
     const { imageHandler, isDesktop, isMobile } = uiHelper($q)
     /**
      * -----------------------------------------
@@ -95,9 +94,12 @@ export default defineComponent({
      * -----------------------------------------
      */
 
-    function goToProduct ()
+    function goToOffer (_offerId: number)
     {
-      console.log('Go To Product');
+      void $router.push({
+        name: ROUTE_NAME.SHOP_OFFER,
+        params: { id: _offerId }
+      })
     }
 
 
@@ -108,7 +110,7 @@ export default defineComponent({
       show,
       // Methods
       imageHandler,
-      goToProduct,
+      goToOffer,
     };
   },
 });

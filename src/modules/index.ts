@@ -19,3 +19,8 @@ export * from './shop/store/types';
  */
 export * from './shop/offer/store';
 export * from './shop/offer/types';
+/**
+ * Shop Categories
+ */
+export * from './shop/category/store';
+export * from './shop/category/types';
