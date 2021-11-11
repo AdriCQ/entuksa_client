@@ -13,7 +13,7 @@
       <q-route-tab exact :to="{ name: ROUTE_NAME.MAIN_HOME }">
         <q-icon name="mdi-store" size="1.6rem" />
       </q-route-tab>
-      <q-route-tab exact :to="{ name: ROUTE_NAME.MAIN_HOME }">
+      <q-route-tab exact :to="{ name: ROUTE_NAME.SHOP_CART }">
         <q-icon name="mdi-cart-outline" size="1.6rem" />
         <q-badge color="primary" floating v-if="countCart > 0">{{ countCart }}</q-badge>
       </q-route-tab>

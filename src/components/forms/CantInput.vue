@@ -1,84 +1,41 @@
 <template>
   <q-field borderless no-error-icon dense>
     <div class="flex wrap items-center">
-      <template v-if="type === 'arrow'">
-        <q-input
-          type="number"
-          :model-value="modelValue"
-          :input-style="inputStyles"
-          input-class="text-body1 text-weight-bold"
-          :readonly="inputReadonly"
-          borderless
-          @update:model-value="handleInput"
-        />
-        <div class="column">
-          <div class="col-auto">
-            <q-btn
-              :color="btnColor"
-              icon="mdi-chevron-up"
-              :size="`${size}px`"
-              padding="xs"
-              :round="btnRounded"
-              :disable="maxValue !== undefined ? modelValue >= maxValue : false"
-              unelevated
-              flat
-              :class="btnBorderClass"
-              @click="plus"
-            />
-          </div>
-          <div class="col-auto">
-            <q-btn
-              :color="btnColor"
-              icon="mdi-chevron-down"
-              :size="`${size}px`"
-              padding="xs"
-              :round="btnRounded"
-              :disable="modelValue <= minValue"
-              unelevated
-              flat
-              :class="btnBorderClass"
-              @click="minus"
-            />
-          </div>
-        </div>
-      </template>
+      <q-btn
+        :color="btnColor"
+        icon="mdi-minus"
+        :size="`${size}px`"
+        padding="xs"
+        :round="btnRounded"
+        :disable="modelValue <= minValue"
+        unelevated
+        flat
+        :class="btnBorderClass"
+        @click="minus"
+      />
+      <q-input
+        type="number"
+        :model-value="modelValue"
+        :input-style="inputStyles"
+        input-class="text-body1 text-weight-bold"
+        :readonly="inputReadonly"
+        borderless
+        class="no-indicators"
+        @update:modelValue="handleInput"
+      />
 
-      <template v-else>
-        <q-btn
-          :color="btnColor"
-          icon="mdi-minus"
-          :size="`${size}px`"
-          padding="xs"
-          :round="btnRounded"
-          :disable="modelValue <= minValue"
-          unelevated
-          flat
-          :class="btnBorderClass"
-          @click="minus"
-        />
-        <q-input
-          type="number"
-          :model-value="modelValue"
-          :input-style="inputStyles"
-          input-class="text-body1 text-weight-bold"
-          :readonly="inputReadonly"
-          borderless
-          @update:modelValue="handleInput"
-        />
-
-        <q-btn
-          :color="btnColor"
-          icon="mdi-plus"
-          :size="`${size}px`"
-          padding="xs"
-          :round="btnRounded"
-          :disable="maxValue !== undefined ? modelValue >= maxValue : false"
-          unelevated
-          flat
-          :class="btnBorderClass"
-          @click="plus"
-        />
-      </template>
+      <q-btn
+        :color="btnColor"
+        icon="mdi-plus"
+        :size="`${size}px`"
+        padding="xs"
+        :round="btnRounded"
+        :disable="maxValue !== undefined ? modelValue >= maxValue : false"
+        unelevated
+        flat
+        :class="btnBorderClass"
+        @click="plus"
+      />
     </div>
   </q-field>
 </template>
@@ -106,12 +63,14 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(_props, { emit }) {
+  setup (_props, { emit })
+  {
     const { btnBorder, maxValue, minValue, size, modelValue } = toRefs(_props);
     /**
      * BTN_BORDER_CLASS
      */
-    const btnBorderClass = computed(() => {
+    const btnBorderClass = computed(() =>
+    {
       if (typeof btnBorder.value == 'string')
         return `border-${btnBorder.value}`;
       else if (btnBorder.value) return 'border-dark';
@@ -129,29 +88,34 @@ export default defineComponent({
     /**
      * EMIT_EVENT
      */
-    function emitEvent(_value: number) {
+    function emitEvent (_value: number)
+    {
       emit('update:modelValue', _value);
     }
 
     /**
      * HANDLE_INPUT
      */
-    function handleInput(_value: number) {
+    function handleInput (_value: number)
+    {
       emitEvent(Number(_value));
     }
 
     /**
      * MINUS
      */
-    function minus() {
-      if (Number(modelValue.value) > minValue.value) {
+    function minus ()
+    {
+      if (Number(modelValue.value) > minValue.value)
+      {
         emitEvent(Number(modelValue.value) - 1);
       }
     }
     /**
      * PLUS
      */
-    function plus() {
+    function plus ()
+    {
       if (
         (maxValue.value && Number(modelValue.value) + 1 <= maxValue.value) ||
         !maxValue.value
@@ -172,3 +136,18 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.no-indicators {
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+</style>

@@ -24,3 +24,8 @@ export * from './shop/offer/types';
  */
 export * from './shop/category/store';
 export * from './shop/category/types';
+/**
+ * Shop Order
+ */
+export * from './shop/order/store';
+export * from './shop/order/types';

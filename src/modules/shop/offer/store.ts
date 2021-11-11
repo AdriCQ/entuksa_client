@@ -35,7 +35,7 @@ export class ShopOfferStore
       const _resp = await this.service.find(_offerId);
       this.offer = _resp.data;
       return _resp.data;
-    } catch (error) { throw error; }
+    } catch (error) { this.offer = null; throw error; }
   }
 }
 /**

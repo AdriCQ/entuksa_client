@@ -12,7 +12,7 @@ import
   shopCategoryKey, shopCategoryStore,
   shopOfferKey, shopOffer,
   shopStoreKey, shopStore,
-  userStore, userInjectionKey
+  userStore, userInjectionKey, shopOrder, shopOrderKey
 } from 'src/modules';
 // background
 import BackgroundVue from './components/Background.vue';
@@ -31,6 +31,7 @@ export default defineComponent({
     provide(shopStoreKey, shopStore);
     provide(shopOfferKey, shopOffer);
     provide(shopCategoryKey, shopCategoryStore);
+    provide(shopOrderKey, shopOrder);
   },
 });
 </script>

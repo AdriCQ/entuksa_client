@@ -1,7 +1,7 @@
 <template>
-  <q-page class="q-gutter-y-sm" padding>
+  <q-page class="q-gutter-y-sm" padding v-if="offer">
     <!-- Offer Data -->
-    <section v-if="offer" style="padding-bottom: 6rem" class="q-gutter-y-sm">
+    <section style="padding-bottom: 6rem" class="q-gutter-y-sm">
       <q-card class="no-box-shadow row">
         <!-- Offer image -->
         <q-img
@@ -59,11 +59,12 @@
     </section>
     <!-- / Offer Data -->
 
-    <section class="fixed-bottom" :style="`padding-bottom: 3rem`">
-      <q-card class="q-px-sm q-pb-md no-box-shadow">
+    <section class="fixed-bottom">
+      <q-card class="no-box-shadow" style="padding-bottom: 3.5rem">
         <q-card-section class="text-subtitle1 text-weight-medium q-pb-none q-pt-xs">
           <div class="row">
             <cant-input
+              v-if="offer?.type === 'PRODUCT'"
               class="q-pl-sm"
               v-model="cant"
               :key="`cant-input${cant}`"
@@ -85,6 +86,7 @@
             rounded
             text-color="dark"
             color="primary"
+            @click="addToCart"
           >
             <q-icon name="mdi-cart-plus" size="sm" left />Añadir al Carrito
           </q-btn>
@@ -97,9 +99,11 @@
 <script lang='ts'>
 import { computed, defineComponent, defineAsyncComponent, onBeforeMount, ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { useRoute } from 'vue-router';
-import { injectStrict, uiHelper } from 'src/helpers';
-import { shopOfferKey, shopCategoryKey } from 'src/modules';
+import { useRoute, useRouter } from 'vue-router';
+import { injectStrict, ROUTE_NAME, uiHelper } from 'src/helpers';
+import { shopOfferKey, shopCategoryKey, shopOrderKey } from 'src/modules';
+import { AxiosError } from 'axios';
+import { ErrorData } from 'src/types';
 /**
  * ShopOfferPage
  */
@@ -112,14 +116,19 @@ export default defineComponent({
   {
     const $q = useQuasar();
     const $route = useRoute();
-    const { imageHandler } = uiHelper($q);
+    const $router = useRouter();
+    const { imageHandler, errorHandler } = uiHelper($q);
     const OfferStore = injectStrict(shopOfferKey);
     const CategoryStore = injectStrict(shopCategoryKey);
+    const ShopOrder = injectStrict(shopOrderKey);
     // OnBeforeMount
     onBeforeMount(() =>
     {
       const offerId = $route.params && $route.params.id ? Number($route.params.id) : 0;
-      OfferStore.actionFindOffer(offerId).then((_r) => { console.log(_r) }).catch(_e => { console.log(_e) });
+      OfferStore.actionFindOffer(offerId).catch((_error: AxiosError<ErrorData>) =>
+      {
+        errorHandler(_error, 'No encontramos la oferta');
+      });
     })
     /**
      * -----------------------------------------
@@ -134,13 +143,24 @@ export default defineComponent({
      *	Methods
      * -----------------------------------------
      */
+    function addToCart ()
+    {
+      if (offer.value && cant.value > 0)
+      {
+        ShopOrder.addOrderOffer({
+          offer: offer.value,
+          qty: offer.value.type === 'PRODUCT' ? cant.value : 0
+        });
+        void $router.push({ name: ROUTE_NAME.SHOP_CART });
+      }
+    }
     function getCategory (_tag: string) { return CategoryStore.getCategory(_tag); }
 
     return {
       // Data
       cant, offer, subtotal,
       // Methods
-      getCategory, imageHandler,
+      addToCart, getCategory, imageHandler,
     }
   }
 });

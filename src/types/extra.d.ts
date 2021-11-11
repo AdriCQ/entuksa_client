@@ -3,11 +3,11 @@ import { ROUTE_NAME } from 'src/helpers';
 /**
  * Data Base Properties
  */
-export interface DataBase
+export interface DataBase<T = number>
 {
-  id: number,
-  createdAt: string,
-  upadateAt: string
+  id?: T,
+  createdAt?: string,
+  upadateAt?: string
 }
 
 /**

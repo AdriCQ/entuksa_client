@@ -9,8 +9,9 @@ export enum ROUTE_NAME
   AUTH_REGISTER = 'auth.register',
   MAIN_HOME = 'main.home',
   // SHOP routes
-  SHOP_STORE = 'shop.store',
+  SHOP_CART = 'shop.cart',
   SHOP_OFFER = 'shop.offer',
+  SHOP_STORE = 'shop.store',
   // User Routes
   USER_PROFILE = 'user.profile',
 

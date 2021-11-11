@@ -1,38 +1,49 @@
 <template>
   <q-page padding>
-    <div class="q-gutter-y-sm" v-if="blocks && blocks.length">
-      <component
-        :is="block.type"
-        v-for="(block, bKey) in blocks"
-        :key="`block-${block.type}-${bKey}`"
-        :data="block.data"
-        :config="block.config"
-      />
-    </div>
+    <q-pull-to-refresh @refresh="refresh">
+      <div class="q-gutter-y-sm" v-if="blocks && blocks.length">
+        <component
+          :is="block.type"
+          v-for="(block, bKey) in blocks"
+          :key="`block-${block.type}-${bKey}`"
+          :data="block.data"
+          :config="block.config"
+        />
+      </div>
+    </q-pull-to-refresh>
   </q-page>
 </template>
 
 <script lang='ts'>
-import { injectStrict } from 'src/helpers';
-import { appInjectionKey } from 'src/modules';
 import { computed, defineComponent } from 'vue';
+import { useQuasar } from 'quasar';
+import { injectStrict, uiHelper } from 'src/helpers';
+import { appInjectionKey } from 'src/modules';
 
 export default defineComponent({
   name: 'MainIndexPage',
   setup ()
   {
+    const $q = useQuasar();
+    const { errorHandler } = uiHelper($q);
     const AppStore = injectStrict(appInjectionKey);
     // On Created
-    AppStore.setup().then(_resp => { console.log('SetupResp', _resp) }).catch(_e => { console.log('SetupError', _e) })
+    refresh(() => console.log('Init Data'));
     /**
      * -----------------------------------------
      *	Data
      * -----------------------------------------
      */
     const blocks = computed(() => AppStore.homeBlocks);
+    /**
+     * -----------------------------------------
+     *	Methods
+     * -----------------------------------------
+     */
+    function refresh (done: CallableFunction) { AppStore.setup().catch(_e => { errorHandler(_e, 'No tenemos conexión') }).finally(() => { done() }) }
 
     return {
-      blocks
+      blocks, refresh
     }
   }
 });
