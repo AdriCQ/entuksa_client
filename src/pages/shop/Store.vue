@@ -5,7 +5,7 @@
       <q-card class="no-shadow-box" v-if="store">
         <template v-if="store.image">
           <q-img
-            :src="imageHandler(store.image.id, 'md')"
+            :src="imageHandler(store.imageId, 'md')"
             spinner-color="primary"
             :ratio="16 / 9"
             spinner-size="82px"

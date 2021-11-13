@@ -14,7 +14,7 @@
       <!-- Image -->
       <q-avatar size="6rem" class="rounded-circle" @click="offerDetails">
         <q-img
-          :src="imageHandler(dataTyped.offer.image, 'sm')"
+          :src="imageHandler(dataTyped.offer.imageId, 'sm')"
           :alt="dataTyped.offer.title"
           :title="dataTyped.offer.title"
           spinner-color="primary"

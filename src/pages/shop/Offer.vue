@@ -6,7 +6,7 @@
         <!-- Offer image -->
         <q-img
           class="col-xs-12 col-sm-6 col-md-4"
-          :src="imageHandler(offer.image, 'lg')"
+          :src="imageHandler(offer.imageId, 'lg')"
           spinner-color="primary"
           :ratio="4 / 3"
           spinner-size="82px"

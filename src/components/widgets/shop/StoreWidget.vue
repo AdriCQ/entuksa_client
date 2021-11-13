@@ -1,7 +1,7 @@
 <template>
   <q-card class="no-box-shadow" style="height:100%" v-if="data" @click="goToStore">
     <q-img
-      :src="imageHandler(1, 'sm')"
+      :src="imageHandler(dataTyped.imageId, 'sm')"
       :alt="dataTyped.title"
       :title="dataTyped.title"
       :ratio="`${config && config.ratio ? config.ratio : 4 / 3}`"

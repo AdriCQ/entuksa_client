@@ -1,11 +1,7 @@
 <template>
-  <q-card
-    class="q-mx-auto full-height justify-center no-box-shadow"
-    @click="goToOffer(dataTyped.id)"
-    v-if="show"
-  >
+  <q-card class="q-mx-auto full-height justify-center no-box-shadow" @click="goToOffer" v-if="show">
     <q-img
-      :src="imageHandler(dataTyped.image, 'sm')"
+      :src="imageHandler(dataTyped.imageId, 'sm')"
       placeholder-src="images/default.jpg"
       :alt="dataTyped.title"
       :title="dataTyped.title"
@@ -74,10 +70,6 @@ export default defineComponent({
       {
         if (config.value && config.value.displayOnly)
         {
-          console.log({
-            config: config.value.displayOnly,
-            isMobile, isDesktop
-          })
           if (
             (config.value.displayOnly === 'DESKTOP' && isMobile) ||
             (config.value.displayOnly === 'MOBILE' && isDesktop)

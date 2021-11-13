@@ -9,6 +9,15 @@ export interface DataBase<T = number>
   createdAt?: string,
   upadateAt?: string
 }
+/**
+ * DataBaseWithImage
+ */
+
+export interface DataBaseWithImage<T = number> extends DataBase<T>
+{
+  image?: IOnlyId;
+  imageId: number;
+}
 
 /**
  * Services Extra Types

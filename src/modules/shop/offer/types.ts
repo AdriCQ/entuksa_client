@@ -1,9 +1,9 @@
-import { DataBase, IOnlyId } from 'src/types';
+import { DataBase, DataBaseWithImage, IOnlyId } from 'src/types';
 // import { IShopStore } from '../store/types';
 /**
  * Ishop offer
  */
-export interface IShopOffer extends DataBase
+export interface IShopOffer extends DataBaseWithImage
 {
   title: string;
   description: string;
@@ -19,7 +19,6 @@ export interface IShopOffer extends DataBase
   validatedAt: Date | null;
   // Relations
   category: IOnlyId<string>;
-  image: IOnlyId;
 }
 /**
  * Ishop offer attribute
