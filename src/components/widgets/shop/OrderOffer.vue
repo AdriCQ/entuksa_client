@@ -1,7 +1,7 @@
 <template>
   <q-card class="q-pa-sm q-mx-auto full-height" style="max-width: 25rem;">
     <q-card-section horizontal class="items-center q-gutter-x-sm q-py-none">
-      <div class="absolute-top-right q-pz-xs" style="z-index: 5">
+      <div class="absolute-top-right q-pz-xs" style="z-index: 5" v-if="!noEditable">
         <q-btn
           icon="mdi-delete"
           text-color="grey-6"
@@ -31,7 +31,7 @@
           <q-chip :label="`$${Number(dataTyped.offer.prices.sell).toFixed(2)}`" />
         </div>
         <div class="text-body2">{{ dataTyped.offer.title }}</div>
-        <div>
+        <div v-if="!noEditable">
           <cant-input
             class="q-pl-sm"
             :model-value="dataTyped.qty"
@@ -43,13 +43,18 @@
           />
         </div>
       </q-card-section>
+      <q-card-section class="full-width q-py-none" v-if="noEditable">
+        <div>
+          <q-chip :label="`x${Number(dataTyped.qty)}`" />
+        </div>
+      </q-card-section>
       <!-- / Content -->
     </q-card-section>
   </q-card>
 </template>
 
 <script lang='ts'>
-import { computed, defineAsyncComponent, defineComponent, toRefs } from 'vue';
+import { computed, defineAsyncComponent, defineComponent, PropType, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { ROUTE_NAME, WidgetProps, uiHelper, injectStrict } from 'src/helpers';
@@ -64,6 +69,10 @@ export default defineComponent({
   },
   props: {
     ...WidgetProps,
+    noEditable: {
+      type: Boolean as PropType<boolean>,
+      default: () => false
+    }
   },
   setup (_props)
   {

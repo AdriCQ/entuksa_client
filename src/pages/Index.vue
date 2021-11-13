@@ -19,7 +19,9 @@ import { computed, defineComponent } from 'vue';
 import { useQuasar } from 'quasar';
 import { injectStrict, uiHelper } from 'src/helpers';
 import { appInjectionKey } from 'src/modules';
-
+/**
+ * MainIndexPage
+ */
 export default defineComponent({
   name: 'MainIndexPage',
   setup ()

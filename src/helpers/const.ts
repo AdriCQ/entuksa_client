@@ -10,6 +10,7 @@ export enum ROUTE_NAME
   MAIN_HOME = 'main.home',
   // SHOP routes
   SHOP_CART = 'shop.cart',
+  SHOP_CHECKOUT = 'shop.checkout',
   SHOP_OFFER = 'shop.offer',
   SHOP_STORE = 'shop.store',
   // User Routes

@@ -39,16 +39,17 @@
       </div>
     </q-card-section>
 
-    <q-inner-loading :showing="config && config.loading">
+    <q-inner-loading :showing="loading">
       <q-spinner-tail size="50px" color="primary" />
     </q-inner-loading>
   </q-card>
 </template>
 
 <script lang='ts'>
-import { computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, ref, toRefs } from 'vue';
 import { useQuasar } from 'quasar';
-import { WidgetProps, uiHelper } from 'src/helpers';
+import { useRouter } from 'vue-router';
+import { WidgetProps, uiHelper, ROUTE_NAME } from 'src/helpers';
 import { IShopStore } from 'src/modules';
 
 export default defineComponent({
@@ -59,18 +60,21 @@ export default defineComponent({
   setup (props)
   {
     const $q = useQuasar();
+    const $router = useRouter();
     const { imageHandler } = uiHelper($q);
     const { data } = toRefs(props);
+
     const dataTyped = computed<IShopStore>(() => (data.value as IShopStore));
+    const loading = ref(false);
+
     function goToStore ()
     {
-      console.log('GoTO');
+      void $router.push({ name: ROUTE_NAME.SHOP_STORE, params: { id: dataTyped.value.id } });
     }
     return {
-      ...props,
-      dataTyped,
-      imageHandler,
-      goToStore,
+      ...props, dataTyped, loading,
+      // Methods
+      imageHandler, goToStore,
     };
   },
 });

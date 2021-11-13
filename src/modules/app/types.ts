@@ -32,6 +32,7 @@ export interface IAppBlockConfig
   displayDense?: boolean;
   ratio?: number;
   displayOnly?: 'MOBILE' | 'DESKTOP';
+  icon?: string;
 }
 /**
  * IAppLeftDrawerConfig

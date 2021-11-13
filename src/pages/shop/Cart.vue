@@ -24,7 +24,8 @@
 
 <script lang='ts'>
 import { computed, defineAsyncComponent, defineComponent, ref } from 'vue';
-import { injectStrict } from 'src/helpers';
+import { useRouter } from 'vue-router';
+import { injectStrict, ROUTE_NAME } from 'src/helpers';
 import { shopOrderKey } from 'src/modules';
 /**
  * ShopCartPage
@@ -37,6 +38,7 @@ export default defineComponent({
   setup ()
   {
     const ShopOrder = injectStrict(shopOrderKey);
+    const $router = useRouter();
     /**
      * -----------------------------------------
      *	Data
@@ -50,7 +52,7 @@ export default defineComponent({
      *	Methods
      * -----------------------------------------
      */
-    function checkOrder () { console.log('CheckOrder') }
+    function checkOrder () { console.log('CheckOrder'); void $router.push({ name: ROUTE_NAME.SHOP_CHECKOUT }) }
 
     return {
       loading, orderOffers, totalPrice,

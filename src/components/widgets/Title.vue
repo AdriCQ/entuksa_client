@@ -1,7 +1,10 @@
 <template>
   <q-card class="no-box-shadow">
     <q-card-section class="text-center text-grey-9 q-py-xs">
-      <div class="text-h6">{{ data }}</div>
+      <div class="text-h6">
+        <q-icon v-if="config && config.icon" :name="config.icon" />
+        {{ data }}
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -15,7 +18,7 @@ export default defineComponent({
   name: 'TitleWidget',
   props: {
     data: { type: String as PropType<string>, required: true },
+    config: { type: Object as PropType<{ icon?: string }>, }
   },
-  setup (props) { return { ...props } }
 });
 </script>

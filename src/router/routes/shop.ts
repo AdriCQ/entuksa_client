@@ -18,6 +18,10 @@ export const shopRoutes: RouteRecordRaw = {
       path: 'cart',
       name: ROUTE_NAME.SHOP_CART,
       component: () => import('pages/shop/Cart.vue'),
+    }, {
+      path: 'checkout',
+      name: ROUTE_NAME.SHOP_CHECKOUT,
+      component: () => import('pages/shop/Checkout.vue'),
     },
   ]
 

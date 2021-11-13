@@ -35,10 +35,7 @@
       v-if="store && store.offers && store.offers.length"
     >
       <title-widget data="Ofertas" />
-      <offers-group
-        :data="store.offers"
-        :config="{ showTitle: true, title: 'Ofertas', displayDense: true }"
-      />
+      <offers-group :data="store.offers" :config="{ displayDense: true }" />
     </section>
     <!-- / Store Offers -->
   </q-page>
@@ -61,15 +58,20 @@ export default defineComponent({
     const $q = useQuasar();
     const $route = useRoute();
     // UI Helper
-    const { imageHandler } = uiHelper($q);
+    const { errorHandler, imageHandler } = uiHelper($q);
     // ShopStore
     const ShopStore = injectStrict(shopStoreKey);
     // Before MOunt
     onBeforeMount(() =>
     {
-      const query = $route.query;
-      if (query.storeId && !isNaN(Number(query.storeId)))
-        void ShopStore.getById(Number(query.storeId));
+      console.log('On Before Mount');
+      const params = $route.params;
+      if (params.id && !isNaN(Number(params.id)))
+      {
+        ShopStore.getById(Number(params.id))
+          .then(_r => { console.log(_r) })
+          .catch(_e => { errorHandler(_e, 'No se pudo cargar los datos de la Tienda') });
+      }
     });
     /**
      * -----------------------------------------
