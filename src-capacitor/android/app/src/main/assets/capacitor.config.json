@@ -1,0 +1,10 @@
+{
+	"appId": "entuksa.nairda.net",
+	"appName": "EnTuKsa",
+	"bundledWebRuntime": false,
+	"npmClient": "yarn",
+	"webDir": "www",
+	"server": {
+		"url": "http://10.224.190.55:8080"
+	}
+}

@@ -1,0 +1,7 @@
+{
+  "appId": "entuksa.nairda.net",
+  "appName": "EnTuKsa",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}
