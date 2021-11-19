@@ -13,22 +13,16 @@
       @update:zoom="doMoveZoom"
     >
       <l-tile-layer :url="MAP_URL" :attribution="ATTRIBUTION" />
-      <!-- <l-control>
-      <q-btn
-        v-if="settings.back"
-        color="white"
-        text-color="black"
-        icon="mdi-keyboard-backspace"
-        @click="goBack"
-      />
-      <q-btn
-        v-if="!settings.noEdit"
-        color="white"
-        :text-color="`${currentGPSPosition ? 'info' : 'black'}`"
-        :icon="`${currentGPSPosition ? 'mdi-crosshairs-gps' : 'mdi-crosshairs'}`"
-        @click="searchCurrentPosition"
-      />
-      </l-control>-->
+      <l-control>
+        <q-btn v-if="settings.back" color="white" text-color="black" icon="mdi-keyboard-backspace" />
+        <q-btn
+          v-if="!settings.noEdit"
+          color="white"
+          :text-color="`${currentGPSPosition ? 'info' : 'black'}`"
+          :icon="`${currentGPSPosition ? 'mdi-crosshairs-gps' : 'mdi-crosshairs'}`"
+          @click="getCurrentGPSPosition"
+        />
+      </l-control>
 
       <l-marker
         :key="`marker-${markerKey}`"
@@ -41,18 +35,19 @@
 
 <script lang='ts'>
 import { computed, defineComponent } from 'vue';
+import { useQuasar } from 'quasar';
 import 'leaflet/dist/leaflet.css';
 import { LatLng, LocationEvent, Icon } from 'leaflet';
 import
 {
-  // LControl,
+  LControl,
   // LControlZoom,
   LMap,
   LMarker,
   LTileLayer,
 } from '@vue-leaflet/vue-leaflet';
-import { injectStrict } from 'src/helpers';
-import { mapInjectionKey } from 'src/modules';
+import { injectStrict, uiHelper } from 'src/helpers';
+import { appInjectionKey, mapInjectionKey } from 'src/modules';
 
 /* Fix leaflet icons */
 type D = Icon.Default & {
@@ -84,14 +79,18 @@ const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 export default defineComponent({
   name: 'MapLayout',
   components: {
-    // LControl,
+    LControl,
     // LControlZoom,
     LMap,
     LMarker,
     LTileLayer,
   },
+  emits: ['position-modified'],
   setup ()
   {
+    const $q = useQuasar();
+    const { errorHandler } = uiHelper($q);
+    const $appStore = injectStrict(appInjectionKey);
     const $mapStore = injectStrict(mapInjectionKey);
     /**
      * -----------------------------------------
@@ -99,6 +98,8 @@ export default defineComponent({
      * -----------------------------------------
      */
     const center = computed(() => $mapStore.center);
+    // const currentPosition = computed(() => $mapStore.currentPosition);
+    const currentGPSPosition = computed(() => $mapStore.currentGPSPosition);
     const markers = computed(() => $mapStore.markers);
     const popup = computed(() => $mapStore.popupOpen);
     const settings = computed(() => $mapStore.settings);
@@ -117,11 +118,14 @@ export default defineComponent({
       {
         $mapStore.markers[0] = (event as LocationEvent).latlng;
         $mapStore.center = (event as LocationEvent).latlng;
-        // setTimeout(() => { $mapStore.popupOpen = false }, 500);
+        $appStore.setup()
+          .catch(_e => { errorHandler(_e, 'Error actualizando información') })
+          .finally(() => { $mapStore.popupOpen = false; })
       }
     }
     /**
      * doMoveCenter
+     * @param _center
      */
     function doMoveCenter (_center: LatLng)
     {
@@ -129,16 +133,32 @@ export default defineComponent({
     }
     /**
      * doMoveZoom
+     * @param _zoom
      */
     function doMoveZoom (_zoom: number)
     {
       $mapStore.zoom = _zoom;
     }
+    /**
+     * getCurrentGPSPosition
+     */
+    async function getCurrentGPSPosition ()
+    {
+      try
+      {
+        await $mapStore.getCurrentGpsPosition()
+      } catch (error) { errorHandler(undefined, 'Error en GPS') }
+    }
+    /**
+     * updatePopupOpen
+     * @param _popup
+     */
     function updatePopupOpen (_popup: boolean) { $mapStore.popupOpen = _popup; }
+
     return {
-      ATTRIBUTION, MAP_URL, center, markers, popup, settings, zoom,
+      ATTRIBUTION, MAP_URL, center, currentGPSPosition, markers, popup, settings, zoom,
       // Methods
-      addMarker, doMoveCenter, doMoveZoom, updatePopupOpen
+      addMarker, doMoveCenter, doMoveZoom, getCurrentGPSPosition, updatePopupOpen
     }
   }
 });

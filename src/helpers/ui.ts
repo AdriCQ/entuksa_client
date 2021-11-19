@@ -21,9 +21,9 @@ export function uiHelper ($q: QVueGlobals, $router?: Router)
    * errorHandler
    * @param _error 
    */
-  function errorHandler (_error: AxiosError<ErrorData>, _default = 'Ha ocurrido un error')
+  function errorHandler (_error?: AxiosError<ErrorData>, _default = 'Ha ocurrido un error')
   {
-    if (_error.response && _error.response.data)
+    if (_error && _error.response && _error.response.data)
     {
       if (_error.response.status === 401)
       {

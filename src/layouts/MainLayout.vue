@@ -30,7 +30,7 @@
 import { computed, defineAsyncComponent, defineComponent, onBeforeMount } from 'vue'
 import { useQuasar } from 'quasar';
 import { injectStrict, PlatformInstance, uiHelper } from 'src/helpers';
-import { appInjectionKey } from 'src/modules';
+import { mapInjectionKey } from 'src/modules';
 import AppFooter from './Footer.vue';
 import AppHeader from './Header.vue';
 import LeftDrawer from './LeftDrawer.vue';
@@ -48,17 +48,17 @@ export default defineComponent({
   setup ()
   {
     const $q = useQuasar();
-    const $appStore = injectStrict(appInjectionKey);
+    const $mapStore = injectStrict(mapInjectionKey);
     const { errorHandler, isMobile } = uiHelper($q);
     // Lifecycle
     onBeforeMount(() =>
     {
       PlatformInstance.GeolocationCurrentPosition().then(_pos =>
       {
-        $appStore.currentPosition = {
+        $mapStore.setAllCurrentPosition({
           lat: _pos.coords.latitude,
           lng: _pos.coords.longitude
-        }
+        });
       }).catch(_e => { errorHandler(_e, 'Error en GPS') })
     })
     // Data

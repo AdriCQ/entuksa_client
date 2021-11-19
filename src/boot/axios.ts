@@ -9,7 +9,7 @@ declare module '@vue/runtime-core' {
     $axios: AxiosInstance;
   }
 }
-export const baseURL = process.env.DEV ? 'http://192.168.1.6:3000' : 'https://srv.entuksa.nairda.net';
+export const baseURL = process.env.DEV ? 'http://localhost:3000' : 'https://srv.entuksa.nairda.net';
 const APP_TOKEN = '1|$argon2i$v=19$m=4096,t=3,p=1$EOHefdy1LeKmgLhRRj7Qow$rRPr4sO3+O9Aa/8YqZDnxTMPzQ/BUo4ZShXn5P5oeBE';
 
 const api = axios.create({

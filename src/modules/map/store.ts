@@ -1,13 +1,15 @@
 import { InjectionKey, ref, reactive } from 'vue';
 import { LatLng, latLng } from 'leaflet';
 import { IMapCoordinate, IMapSettings } from 'src/types';
-import { CFG_COORDINATES } from 'src/helpers';
+import { CFG_COORDINATES, PlatformInstance } from 'src/helpers';
 /**
  * MapStore
  */
 export class MapStore
 {
   private _center = ref<LatLng>(latLng(CFG_COORDINATES.CIENFUEGOS.lat, CFG_COORDINATES.CIENFUEGOS.lng));
+  private _currentPosition = ref<null | IMapCoordinate>(null);
+  private _currentGPSPosition = ref<null | IMapCoordinate>(null);
   private _markers = ref<IMapCoordinate[]>([]);
   private _popupOpen = ref(false);
   private _settings = reactive<IMapSettings>({
@@ -24,6 +26,16 @@ export class MapStore
    */
   get center () { return this._center.value; }
   set center (_c: LatLng) { this._center.value = _c }
+  /**
+   * Current Position
+   */
+  get currentPosition () { return this._currentPosition.value; }
+  set currentPosition (_p: null | IMapCoordinate) { this._currentPosition.value = _p; }
+  /**
+   * Current GPS Position
+   */
+  get currentGPSPosition () { return this._currentGPSPosition.value; }
+  set currentGPSPosition (_p: null | IMapCoordinate) { this._currentGPSPosition.value = _p; }
   /**
    * Markers Setters  & Getters
    */
@@ -44,6 +56,29 @@ export class MapStore
    */
   get zoom () { return this._zoom.value; }
   set zoom (_zoom: number) { this._zoom.value = _zoom; }
+  /**
+   * getCurrentGpsPosition
+   */
+  async getCurrentGpsPosition ()
+  {
+    try
+    {
+      const gps = await PlatformInstance.GeolocationCurrentPosition();
+      this.setAllCurrentPosition({
+        lat: gps.coords.latitude,
+        lng: gps.coords.longitude
+      })
+    } catch (error) { throw error; }
+  }
+  /**
+   * setAllCurrentPosition
+   * @param _pos 
+   */
+  setAllCurrentPosition (_pos: IMapCoordinate)
+  {
+    this.currentGPSPosition = _pos;
+    this.currentPosition = _pos;
+  }
 }
 /**
  * mapStoreInstance
