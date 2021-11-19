@@ -1,7 +1,7 @@
-import { PlatformInstance } from 'src/helpers';
 import { reactive, ref, InjectionKey } from 'vue';
 import { UserServices } from './service';
 import { IUserProfile, IUserStorage, IAuthSignInReq, IAuthRes } from './types';
+import { PlatformInstance } from 'src/helpers';
 /**
  * STORAGE_KEY
  */
@@ -46,34 +46,32 @@ export class UserStore
    */
   async load ()
   {
-    const get = PlatformInstance.storageGet<IUserStorage>(STORAGE_KEY);
-    if (get)
+    try
     {
-      if ((get as Promise<IUserStorage>).then)
+      const get = await PlatformInstance.StorageGet<IUserStorage>(STORAGE_KEY);
+      if (get)
       {
-        const { authToken, profile } = await (get as Promise<IUserStorage>);
-        this._authToken.value = authToken;
-        this._profile = profile;
-      } else
-      {
-        const { authToken, profile } = get as IUserStorage;
-        this._authToken.value = authToken;
-        this._profile = profile;
+        this.authToken = get.authToken;
+        this.profile = get.profile;
       }
-    }
+    } catch (error) { throw error; }
+
   }
   /**
    * saveOnStorage
    */
-  save ()
+  async save ()
   {
-    void PlatformInstance.storageSet({
-      key: STORAGE_KEY,
-      value: {
-        authToken: this.authToken,
-        profile: this.profile,
-      }
-    })
+    try
+    {
+      await PlatformInstance.StorageSet<IUserStorage>({
+        key: STORAGE_KEY,
+        value: {
+          authToken: this.authToken,
+          profile: this.profile
+        }
+      });
+    } catch (error) { throw error; }
   }
   /**
    * singIn
@@ -87,7 +85,7 @@ export class UserStore
       const data = (await this.services.signIn(_p)).data;
       this._authToken.value = data.token;
       this._profile = data.user;
-      this.save();
+      await this.save();
       return data;
     } catch (error)
     {

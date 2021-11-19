@@ -9,7 +9,6 @@ const routes: RouteRecordRaw[] = [
   authRoute,
   shopRoutes,
   userRoutes,
-
   // Always leave this as last one,
   // but you can also remove it
   {

@@ -48,6 +48,6 @@ export interface IAuthSignupReq
  */
 export interface IUserStorage
 {
-  authToken: string;
+  authToken: string | null;
   profile: IUserProfile;
 }

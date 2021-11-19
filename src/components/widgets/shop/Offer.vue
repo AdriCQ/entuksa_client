@@ -86,11 +86,12 @@ export default defineComponent({
      * -----------------------------------------
      */
 
-    function goToOffer (_offerId: number)
+    function goToOffer ()
     {
+
       void $router.push({
         name: ROUTE_NAME.SHOP_OFFER,
-        params: { id: _offerId }
+        params: { id: dataTyped.value.id }
       })
     }
 

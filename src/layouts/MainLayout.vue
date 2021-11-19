@@ -19,12 +19,18 @@
     <!-- Footer -->
     <app-footer v-if="isMobile" />
     <!-- / Footer -->
+
+    <!-- MapPopup -->
+    <map-popup />
+    <!-- / MapPopup -->
   </q-layout>
 </template>
 
 <script lang='ts'>
+import { computed, defineAsyncComponent, defineComponent, onBeforeMount } from 'vue'
 import { useQuasar } from 'quasar';
-import { computed, defineComponent } from 'vue'
+import { injectStrict, PlatformInstance, uiHelper } from 'src/helpers';
+import { appInjectionKey } from 'src/modules';
 import AppFooter from './Footer.vue';
 import AppHeader from './Header.vue';
 import LeftDrawer from './LeftDrawer.vue';
@@ -36,13 +42,26 @@ export default defineComponent({
   components: {
     AppFooter,
     AppHeader,
-    LeftDrawer
+    LeftDrawer,
+    'map-popup': defineAsyncComponent(() => import('src/components/popups/Map.vue'))
   },
   setup ()
   {
     const $q = useQuasar();
+    const $appStore = injectStrict(appInjectionKey);
+    const { errorHandler, isMobile } = uiHelper($q);
+    // Lifecycle
+    onBeforeMount(() =>
+    {
+      PlatformInstance.GeolocationCurrentPosition().then(_pos =>
+      {
+        $appStore.currentPosition = {
+          lat: _pos.coords.latitude,
+          lng: _pos.coords.longitude
+        }
+      }).catch(_e => { errorHandler(_e, 'Error en GPS') })
+    })
     // Data
-    const isMobile = computed(() => Boolean($q.platform.is.mobile));
     const showHeader = computed(() => true)
 
     return {

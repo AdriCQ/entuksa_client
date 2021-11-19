@@ -1,9 +1,10 @@
-import { IRoute } from 'src/types';
 import { ref, InjectionKey, reactive } from 'vue';
+// Local
 import { AppService } from './service';
 import { IApp, IAppBlock, IAppLeftDrawerConfig, IAppResponseSetup } from './types';
 // Others modules
 import { userStore, shopStore } from 'src/modules';
+import { IMapCoordinate, IRoute } from 'src/types';
 /**
  * STORAGE_KEY
  */
@@ -25,6 +26,7 @@ export class AppStore
     title: 'EnTuKsa',
     token: '1|$argon2i$v=19$m=4096,t=3,p=1$EOHefdy1LeKmgLhRRj7Qow$rRPr4sO3+O9Aa/8YqZDnxTMPzQ/BUo4ZShXn5P5oeBE'
   });
+  private _currentPosition = ref<null | IMapCoordinate>(null);
   private _homeBlocks = ref<IAppBlock[] | null>(null);
   private _leftDrawer = ref(false);
   private _leftDrawerConfig = reactive<IAppLeftDrawerConfig>({
@@ -40,6 +42,11 @@ export class AppStore
    * Gets app token
    */
   get appToken () { return this._app.token; }
+  /**
+   * Current Position
+   */
+  get currentPosition () { return this._currentPosition.value; }
+  set currentPosition (_p: null | IMapCoordinate) { this._currentPosition.value = _p; }
   /**
    * Home Blocks getter & setter
    */
@@ -64,6 +71,9 @@ export class AppStore
    * -----------------------------------------
    *	Methods
    * -----------------------------------------
+   */
+  /**
+   * toggleLeftDrawer
    */
   toggleLeftDrawer () { this._leftDrawer.value = !this._leftDrawer.value }
   /**

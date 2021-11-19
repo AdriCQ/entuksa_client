@@ -29,3 +29,7 @@ export * from './shop/category/types';
  */
 export * from './shop/order/store';
 export * from './shop/order/types';
+/**
+ * Map
+ */
+export * from './map/store'

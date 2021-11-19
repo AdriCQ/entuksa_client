@@ -9,6 +9,7 @@ import { defineComponent, provide } from 'vue';
 import
 {
   appInjectionKey, appStore,
+  mapInjectionKey, mapStoreInstance,
   shopCategoryKey, shopCategoryStore,
   shopOfferKey, shopOffer,
   shopStoreKey, shopStore,
@@ -28,6 +29,7 @@ export default defineComponent({
   {
     provide(appInjectionKey, appStore);
     provide(userInjectionKey, userStore);
+    provide(mapInjectionKey, mapStoreInstance);
     provide(shopStoreKey, shopStore);
     provide(shopOfferKey, shopOffer);
     provide(shopCategoryKey, shopCategoryStore);

@@ -16,6 +16,7 @@
 
 <script lang='ts'>
 import { computed, defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { injectStrict, uiHelper } from 'src/helpers';
 import { appInjectionKey } from 'src/modules';
@@ -27,7 +28,8 @@ export default defineComponent({
   setup ()
   {
     const $q = useQuasar();
-    const { errorHandler } = uiHelper($q);
+    const $router = useRouter();
+    const { errorHandler } = uiHelper($q, $router);
     const AppStore = injectStrict(appInjectionKey);
     // On Created
     refresh(() => console.log('Init Data'));

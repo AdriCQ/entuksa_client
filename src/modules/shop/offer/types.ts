@@ -1,4 +1,4 @@
-import { DataBase, DataBaseWithImage, IOnlyId } from 'src/types';
+import { DataBaseWithImage, IOnlyId } from 'src/types';
 // import { IShopStore } from '../store/types';
 /**
  * Ishop offer

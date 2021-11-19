@@ -19,7 +19,13 @@
           type="search"
         >
           <template v-slot:before>
-            <q-btn color="primary" class="q-px-xs q-mx-none" flat icon="mdi-map-marker" />
+            <q-btn
+              color="primary"
+              class="q-px-xs q-mx-none"
+              flat
+              icon="mdi-map-marker"
+              @click="openMap"
+            />
           </template>
           <template v-slot:after>
             <q-btn color="primary" class="q-px-xs q-mx-none" flat icon="mdi-magnify" />
@@ -38,20 +44,23 @@
 </template>
 
 <script lang='ts'>
+import { defineComponent, computed, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { injectStrict, uiHelper } from 'src/helpers';
-import { appInjectionKey } from 'src/modules';
-import { defineComponent, computed, ref } from 'vue';
-
+import { appInjectionKey, mapInjectionKey } from 'src/modules';
+/**
+ * AppHeader
+ */
 export default defineComponent({
   name: 'AppHeader',
   setup ()
   {
     const App = injectStrict(appInjectionKey);
+    const $mapStore = injectStrict(mapInjectionKey);
     const $q = useQuasar();
     const { isMobile } = uiHelper($q);
     // Data
-    const address = computed(() => 'Calle Silencio #32, Palmira, Cienfuegos');
+    // const address = computed(() => 'Calle Silencio #32, Palmira, Cienfuegos');
     const leftDrawer = computed(() => App.leftDrawer);
     const search = ref('');
     /**
@@ -59,10 +68,12 @@ export default defineComponent({
      *	Methods
      * -----------------------------------------
      */
-    function openMap () { console.log('Click OpenMap'); }
+    function openMap () { $mapStore.popupOpen = true; }
     function toggleLeftDrawer () { App.toggleLeftDrawer(); }
     return {
-      address, isMobile, leftDrawer, search, openMap, toggleLeftDrawer
+      isMobile, leftDrawer, search,
+      // Methods
+      openMap, toggleLeftDrawer
     }
   }
 });
