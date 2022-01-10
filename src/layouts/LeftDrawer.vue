@@ -57,7 +57,7 @@
         <!-- / Mis Pedidos -->
 
         <!-- Mis Marcadores -->
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple :to="{ name: ROUTE_NAME.MAP_MY_LOCATIONS }">
           <q-item-section avatar top>
             <q-avatar
               size="md"
@@ -90,7 +90,7 @@
 </template>
 
 <script lang='ts'>
-import { injectStrict } from 'src/helpers';
+import { injectStrict, ROUTE_NAME } from 'src/helpers';
 import { appInjectionKey, userInjectionKey } from 'src/modules';
 import { computed, defineComponent } from 'vue';
 
@@ -130,7 +130,7 @@ export default defineComponent({
       // Data
       sidebarConfig, sidebarOpen, userName,
       // Methods
-      setSidebarMini, updateSidebarOpen
+      setSidebarMini, updateSidebarOpen, ROUTE_NAME
     }
   },
 });

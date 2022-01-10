@@ -34,8 +34,8 @@ export class BrowserPlatformHelper implements IPlatformHelper
     {
       if (LocalStorage.has(_key))
       {
-        const resp = LocalStorage.getItem(_key);
-        _resolve(resp ? resp as unknown as T : null);
+        const resp = LocalStorage.getItem(_key)?.toString();
+        _resolve(resp ? JSON.parse(resp) as unknown as T : null);
       }
       _resolve(null)
     })

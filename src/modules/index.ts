@@ -32,4 +32,5 @@ export * from './shop/order/types';
 /**
  * Map
  */
-export * from './map/store'
+export * from './map/store';
+export * from './map/types';

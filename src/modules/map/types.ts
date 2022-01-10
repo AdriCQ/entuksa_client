@@ -1,4 +1,5 @@
 import { LatLng } from 'leaflet';
+import { DataBase } from 'src/types';
 /**
  * IMapCenter
  */
@@ -16,6 +17,15 @@ export interface IMapCoordinate
   lng: number;
 }
 /**
+ * Imap position
+ */
+export interface IMapPosition extends DataBase
+{
+  address: string;
+  coordinate: IMapCoordinate;
+  validatedAt?: Date;
+}
+/**
  * IMapSettings
  */
 export interface IMapSettings
@@ -26,4 +36,12 @@ export interface IMapSettings
   maxZoom?: number,
   noEdit?: boolean,
   noMove?: boolean,
+}
+/**
+ * IMapUserPosition
+ */
+export interface IMapUserPosition extends DataBase
+{
+  title: string;
+  position: IMapPosition;
 }

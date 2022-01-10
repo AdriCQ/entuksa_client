@@ -102,6 +102,7 @@ export default defineComponent({
     const currentGPSPosition = computed(() => $mapStore.currentGPSPosition);
     const markers = computed(() => $mapStore.markers);
     const popup = computed(() => $mapStore.popupOpen);
+    const popupMode = computed(() => $mapStore.popupMode);
     const settings = computed(() => $mapStore.settings);
     const zoom = computed(() => $mapStore.zoom);
     /**
@@ -118,9 +119,16 @@ export default defineComponent({
       {
         $mapStore.markers[0] = (event as LocationEvent).latlng;
         $mapStore.center = (event as LocationEvent).latlng;
-        $appStore.setup()
-          .catch(_e => { errorHandler(_e, 'Error actualizando información') })
-          .finally(() => { $mapStore.popupOpen = false; })
+        if (popupMode.value === 'setup-app')
+        {
+          $appStore.setup()
+            .catch(_e => { errorHandler(_e, 'Error actualizando información') })
+            .finally(() => { $mapStore.popupOpen = false; });
+        }
+        setTimeout(() =>
+        {
+          $mapStore.popupOpen = false;
+        }, 750);
       }
     }
     /**
